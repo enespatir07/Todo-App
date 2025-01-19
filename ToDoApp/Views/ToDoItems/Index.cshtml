@@ -1,0 +1,122 @@
+﻿@model IEnumerable<ToDoApp.Models.ToDoItem>
+
+<h2>Tasks</h2>
+<hr/>
+<table class="table">
+    
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <div style="display: flex; align-items: center;">
+                    <form asp-action="ToggleComplete" asp-route-id="@item.Id" method="post" style="margin: 0; padding: 0;">
+                        <label class="custom-checkbox">
+                            <input type="checkbox" onchange="this.form.submit()" @(item.IsComplete ? "checked" : "") />
+                            <span class="checkmark"></span>
+                        </label>
+                    </form>
+                    <span ondblclick="enableEdit(this, @item.Id)" style="display:inline-block; margin-left: 5px; @(item.IsComplete ? "text-decoration: line-through; color: gray;" : "")">
+            @item.Name
+        </span>
+                    <form asp-action="Edit" method="post" id="edit-form-@item.Id" style="display:none; margin:0;">
+                        <input type="text" name="Name" value="@item.Name" class="form-control" style="display:inline; width: auto;" />
+                        <input type="hidden" name="Id" value="@item.Id" />
+                    </form>
+                </div>
+            </td>
+
+
+
+            <td style="text-align: right;">
+                <div style="display: flex; justify-content: flex-end; align-items: center;">
+                    
+                    <form asp-action="Delete" method="post" onsubmit="this.querySelector('button').disabled = true;" style="display:inline;">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </td>
+
+        </tr>
+    }
+    </tbody>
+</table>
+
+<div style="position: fixed; bottom: 0; width: 100%; background-color: #f8f9fa; border-top: 1px solid #ccc; padding: 10px; display: flex; align-items: center;">
+    <form asp-action="Create" method="post" style="display: flex; width: 100%;">
+        <input type="text" name="Name" placeholder="Enter task name" class="form-control" style="flex: 1; margin-right: 10px;" required />
+        <input type="hidden" name="IsComplete" value="false" />
+        <button type="submit" class="btn btn-success">Add Task</button>
+    </form>
+</div>
+
+<style>
+    .custom-checkbox {
+        position: relative;
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        margin-right: 5px; /* Adjust spacing */
+        margin-top: 7px;
+    }
+
+    .custom-checkbox input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+    }
+
+    .custom-checkbox .checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 20px;
+        width: 20px;
+        background-color: #f1f1f1;
+        border: 1px solid #ccc;
+        border-radius: 50%; /* Make it circular */
+    }
+
+    .custom-checkbox input:checked ~ .checkmark {
+        background-color: #4caf50;
+    }
+
+    .custom-checkbox .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+    }
+
+    .custom-checkbox input:checked ~ .checkmark:after {
+        display: block;
+    }
+
+    .custom-checkbox .checkmark:after {
+        left: 7px;
+        top: 3px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+    }
+
+    .btn-danger {
+        margin-left: 10px;
+    }
+</style>
+
+
+<script>
+    function enableEdit(span, id) {
+        span.style.display = 'none';
+        const form = document.getElementById(`edit-form-${id}`);
+        form.style.display = 'inline';
+        const input = form.querySelector('input[name="Name"]');
+        input.focus();
+        input.select();
+    }
+</script>
