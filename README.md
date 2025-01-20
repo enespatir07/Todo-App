@@ -72,27 +72,6 @@ dotnet run
 
 5. Open the application in your browser at [http://localhost:5000](http://localhost:5000).
 
----
-
-## File Structure
-
-```
-ToDoApp/
-├── Controllers/
-│   ├── ToDoItemsController.cs    # Handles CRUD operations for tasks
-├── Models/
-│   ├── ToDoItem.cs               # Task model
-│   ├── ToDoContext.cs            # Entity Framework DbContext
-├── Views/
-│   ├── ToDoItems/
-│       ├── Index.cshtml          # Main UI for task management
-├── wwwroot/
-│   ├── css/                      # Custom CSS for styling
-├── appsettings.json              # Configuration for database and other settings
-├── Program.cs                    # Application startup
-```
-
----
 
 ## Features Walkthrough
 
